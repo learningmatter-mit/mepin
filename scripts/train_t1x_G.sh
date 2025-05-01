@@ -1,0 +1,12 @@
+srun python -m mepin.experiment.train --config-name=maxflux_xtb \
+    project=$NEPTUNE_PROJECT \
+    tags="[maxflux_xtb,t1x_xtb,geodesic_init]" \
+    model.use_geodesic=true \
+    dataset.use_geodesic=true \
+    dataset.data_dir="data/t1x_xtb" \
+    dataset.augment_rotation=false \
+    dataset.swap_reactant_product=false \
+    model.num_elements=10 \
+    +trainer.devices=$SLURM_NTASKS_PER_NODE \
+    +trainer.num_nodes=$SLURM_NNODES \
+    +trainer.strategy=ddp

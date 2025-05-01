@@ -1,0 +1,12 @@
+python -m mepin.experiment.train --config-name=maxflux_xtb \
+    project=$NEPTUNE_PROJECT \
+    tags="[maxflux_xtb,cyclo_xtb,geodesic_init]" \
+    model.use_geodesic=true \
+    dataset.use_geodesic=true \
+    dataset.data_dir="data/cyclo_xtb" \
+    dataset.augment_rotation=false \
+    dataset.swap_reactant_product=false \
+    dataset.num_images=6 \
+    model.num_elements=36 \
+    model.num_layers=3 \
+    model.num_features=32

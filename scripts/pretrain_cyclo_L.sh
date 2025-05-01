@@ -1,0 +1,9 @@
+python -m mepin.experiment.train --config-name=geodesic \
+    project=$NEPTUNE_PROJECT \
+    tags="[geodesic,cyclo_xtb]" \
+    dataset.data_dir="data/cyclo_xtb" \
+    dataset.swap_reactant_product=false \
+    dataset.augment_angle_scale=0.05 \
+    model.num_elements=36 \
+    trainer.accumulate_grad_batches=3 \
+    dataset.batch_size=1

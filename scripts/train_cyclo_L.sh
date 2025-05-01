@@ -1,0 +1,14 @@
+python -m mepin.experiment.train --config-name=maxflux_xtb_new \
+    project=$NEPTUNE_PROJECT \
+    tags="[maxflux_xtb,cyclo_xtb,pretrained]" \
+    dataset.data_dir="data/cyclo_xtb" \
+    dataset.swap_reactant_product=false \
+    losses.loss_arc_length.weight=0.001 \
+    dataset.num_images=6 \
+    model.num_elements=36 \
+    model.num_layers=3 \
+    model.num_features=32 \
+    +trainer.devices=$SLURM_NTASKS_PER_NODE \
+    +trainer.num_nodes=$SLURM_NNODES \
+    +trainer.strategy=ddp \
+    +pretrained_ckpt=$GEODESIC_CKPT

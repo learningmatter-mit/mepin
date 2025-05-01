@@ -1,0 +1,11 @@
+srun python -m mepin.experiment.train --config-name=maxflux_xtb \
+    project=$NEPTUNE_PROJECT \
+    tags="[maxflux_xtb,t1x_xtb,pretrained]" \
+    dataset.data_dir="data/t1x_xtb" \
+    dataset.swap_reactant_product=true \
+    losses.loss_arc_length.weight=0.001 \
+    model.num_elements=10 \
+    +trainer.devices=$SLURM_NTASKS_PER_NODE \
+    +trainer.num_nodes=$SLURM_NNODES \
+    +trainer.strategy=ddp \
+    +pretrained_ckpt=$GEODESIC_CKPT

@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mepin"
+authors = [
+    { name = "Juno Nam", email = "junonam@mit.edu" }
+]
+description = "MEP inference network"
+readme = "README.md"
+requires-python = ">=3.10"
+version = "0.1.0"
+dependencies = [
+    "torch",
+    "torch_geometric",
+    "torch_scatter",
+    "ase",
+    "dxtb",
+    "hydra-core",
+    "lightning",
+    "numpy",
+    "omegaconf",
+    "pandas",
+    "scipy",
+    "tad_mctc",
+    "vesin",
+    "ipykernel",
+]
+
+[project.optional-dependencies]
+dev = [
+    "neptune",
+    "pre-commit",
+    "ruff",
+]
+
+[tool.setuptools]
+packages.find = {where = ["."], include = ["mepin*"], namespaces = true}
+
+[tool.ruff]
+extend-include = ["*.ipynb"]

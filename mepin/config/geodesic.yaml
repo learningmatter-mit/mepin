@@ -1,0 +1,69 @@
+# General
+project: null
+tags:
+  - geodesic
+seed: 42
+
+# Model
+model:
+  _target_: mepin.model.modules.TripleCrossPaiNNModule
+  num_features: 64
+  num_radial_basis: 20
+  num_layers: 4
+  num_elements: 10
+  r_max: 6.0
+  r_offset: 0.5
+  use_vector_embedding: false
+  optimizer_config:
+    _target_: torch.optim.Adam
+    lr: 1e-4
+  loss_configs: ${losses}
+
+# Loss
+losses:
+  loss_geodesic:
+    _target_: mepin.model.loss.GeodesicLoss
+    alpha: 1.7
+    beta: 0.01
+    distance_clamp: 0.1
+    weight: 1.0
+    log_clip_value: 100.0
+
+# Trainer
+trainer:
+  _target_: lightning.pytorch.Trainer
+  max_epochs: 100
+  log_every_n_steps: 1
+  check_val_every_n_epoch: 1
+  gradient_clip_val: 1.0
+  accumulate_grad_batches: 1
+  logger:
+    _target_: lightning.pytorch.loggers.NeptuneLogger
+    project: ${project}
+    tags: ${tags}
+  callbacks:
+    - _target_: lightning.pytorch.callbacks.EarlyStopping
+      monitor: val/loss
+      patience: 20
+      mode: min
+    - _target_: lightning.pytorch.callbacks.ModelCheckpoint
+      monitor: val/loss
+      save_top_k: 1
+      mode: min
+      save_last: true
+      filename: '{epoch}'
+      verbose: true
+
+# Data
+dataset:
+  _target_: mepin.data.reaction_path.ReactionPathDataModule
+  data_dir: null
+  num_images: 8
+  batch_size: 3
+  cutoff: ${model.r_max}
+  seed: ${seed}
+  augment_rotation: true
+  augment_angle_scale: 0.05
+  frame_alignment: true
+  swap_reactant_product: true
+  num_workers: 8
