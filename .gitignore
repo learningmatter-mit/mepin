@@ -168,3 +168,4 @@ outputs/
 
 # Data directory
 data/
+!mepin/data/
